@@ -1,203 +1,145 @@
-var sliderA = document.getElementById('sliderA'),
-    sliderB = document.getElementById('sliderB'),
-    sliderM = document.getElementById('sliderM'),
-    sliderN = document.getElementById('sliderN'),
-    circleButton = document.getElementById('circle'),
-    ellipseButton = document.getElementById('ellipse'),
-    astroidButton = document.getElementById('astroid'),
-    parallelogramButton = document.getElementById('parallelogram'),
-    squareButton = document.getElementById('square'),
-    parabolaeButton = document.getElementById('parabolae'),
-    convexButton = document.getElementById('convex'),
-    squircleButton = document.getElementById('squircle'),
-    rectellipseButton = document.getElementById('rectellipse'),
-    pietheinButton = document.getElementById('piet-hein'),
-    ellipseevoluteButton = document.getElementById('ellipse-evolute'),
-    iosappButton = document.getElementById('ios-app'),
-    eqtn = document.getElementById('eq');
+var sliderA = document.getElementById('sliderA')
+var sliderB = document.getElementById('sliderB')
+var sliderM = document.getElementById('sliderM')
+var sliderN = document.getElementById('sliderN')
+var circleButton = document.getElementById('circle')
+var ellipseButton = document.getElementById('ellipse')
+var astroidButton = document.getElementById('astroid')
+var parallelogramButton = document.getElementById('parallelogram')
+var squareButton = document.getElementById('square')
+var parabolaeButton = document.getElementById('parabolae')
+var convexButton = document.getElementById('convex')
+var squircleButton = document.getElementById('squircle')
+var rectellipseButton = document.getElementById('rectellipse')
+var pietheinButton = document.getElementById('piet-hein')
+var ellipseevoluteButton = document.getElementById('ellipse-evolute')
+var iosappButton = document.getElementById('ios-app')
+var eqtn = document.getElementById('eq')
+var winH = document.documentElement.clientHeight
+var winW = document.documentElement.clientWidth;
+// (document.documentElement.clientWidth >= 500) ? (w=500, h=500) : (w=document.documentElement.clientWidth-100, h=w);
 
-var w, h
 
-(document.documentElement.clientHeight >= 930) ? (w = 600, h = 600) : ((document.documentElement.clientWidth >= 930) ? (h = document.documentElement.clientHeight - 300, w = h) : (w = document.documentElement.clientWidth, h = w)) 
+(winH > winW) ? (w=winW-100) : ((winH > 800) ? (w=winH-430) : (w=500))
 
-
-document.getElementById('plot-parent').setAttribute("style","width:"+w+"px;");
+h=w
+document.getElementById('plot-parent').setAttribute('style', 'width:' + w + 'px;')
 
 noUiSlider.create(sliderA, {
-    start: [1],
-    connect: true,
-    range: {
-        'min': 0.1,
-        'max': 4
-    }
-});
+  start: [1],
+  connect: true,
+  range: {
+    'min': 0.1,
+    'max': 4
+  }
+})
 
 noUiSlider.create(sliderB, {
-    start: [1],
-    connect: true,
-    range: {
-        'min': 0.1,
-        'max': 4
-    }
-});
+  start: [1],
+  connect: true,
+  range: {
+    'min': 0.1,
+    'max': 4
+  }
+})
 
 noUiSlider.create(sliderM, {
-    start: [1],
-    connect: true,
-    range: {
-        'min': 0.1,
-        'max': 5
-    }
-});
+  start: [1],
+  connect: true,
+  range: {
+    'min': 0.1,
+    'max': 5
+  }
+})
 
 noUiSlider.create(sliderN, {
-    start: [1],
-    connect: true,
-    range: {
-        'min': 0.1,
-        'max': 5
+  start: [1],
+  connect: true,
+  range: {
+    'min': 0.1,
+    'max': 5
+  }
+})
+
+function draw () {
+  var a = sliderA.noUiSlider.get()
+
+        
+var b = sliderB.noUiSlider.get()
+
+        
+var m = sliderM.noUiSlider.get()
+
+        
+var n = sliderN.noUiSlider.get()
+
+        
+var ma = 2 / m
+
+        
+var na = 2 / n
+
+  var valmap = math.range(-10, 10, 0.01).toArray()
+
+          
+var xval = valmap.map(t => math.abs((math.pow(math.cos(t), ma))) * a * math.sign(math.cos(t)))
+
+          
+var yval = valmap.map(t => math.abs((math.pow(math.sin(t), na))) * b * math.sign(math.sin(t)))
+
+  const trace = {
+    x: xval,
+    y: yval,
+    type: 'scatter'
+  }
+
+  var layout = {
+    width: w,
+    height: h,
+    yaxis: { range: [-4.2, 4.2] },
+    xaxis: { range: [-4.2, 4.2] },
+    margin: {
+      l: 20,
+      r: 20,
+      b: 20,
+      t: 20,
+      pad: 4
     }
-});
-
-function draw() {
-    var a = sliderA.noUiSlider.get(),
-        b = sliderB.noUiSlider.get(),
-        m = sliderM.noUiSlider.get(),
-        n = sliderN.noUiSlider.get(),
-        ma = 2/m,
-        na = 2/n
-
-    var valmap = math.range(-10,10,0.01).toArray(),
-          xval = valmap.map(t => math.abs((math.pow(math.cos(t),ma)))*a*math.sign(math.cos(t))),
-          yval = valmap.map(t => math.abs((math.pow(math.sin(t),na)))*b*math.sign(math.sin(t))); 
-
-    const trace = {
-        x: xval,
-        y: yval,
-        type: 'scatter'
-    }
-
-    var layout = {
-        width: w,
-        height: h,
-        yaxis: {range: [-4.2, 4.2]},
-        xaxis: {range: [-4.2, 4.2]},
-        margin: {
-            l: 20,
-            r: 20,
-            b: 20,
-            t: 20,
-            pad: 4
-        }
-    };
-    const data = [trace]
-    Plotly.react('plot', data, layout, {responsive: true, staticPlot: true});
-    var eq = "\\left\\lvert \\dfrac{x}{" + a + "}^{" + m + "} \\right\\rvert" + " \\left\\lvert \\dfrac{y}{" + b + "}^{" + n + "} \\right\\rvert = 1"
-    console.log(eq)
-    // document.getElementById('eq').innerHTML = eq;
-    // updateMathContent(eq)
-    katex.render(eq, eqtn, {
-        throwOnError: false
-    });
+  }
+  const data = [trace]
+  Plotly.react('plot', data, layout, { responsive: true, staticPlot: true })
+  var eq = '\\left\\lvert \\dfrac{x}{' + a + '}^{' + m + '} \\right\\rvert' + ' \\left\\lvert \\dfrac{y}{' + b + '}^{' + n + '} \\right\\rvert = 1'
+  console.log(eq)
+  // document.getElementById('eq').innerHTML = eq;
+  // updateMathContent(eq)
+  katex.render(eq, eqtn, {
+    throwOnError: false
+  })
 };
 
-sliderA.noUiSlider.on('update', function () {draw()})
-sliderB.noUiSlider.on('update', function () {draw()})
-sliderM.noUiSlider.on('update', function () {draw()})
-sliderN.noUiSlider.on('update', function () {draw()})
+sliderA.noUiSlider.on('update', function () { draw() })
+sliderB.noUiSlider.on('update', function () { draw() })
+sliderM.noUiSlider.on('update', function () { draw() })
+sliderN.noUiSlider.on('update', function () { draw() })
 
-circleButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(2)
-    sliderN.noUiSlider.set(2)
+function setSliders (button, a, b, m, n) {
+  button.addEventListener('click', function () {
+    sliderA.noUiSlider.set(a)
+    sliderB.noUiSlider.set(b)
+    sliderM.noUiSlider.set(m)
+    sliderN.noUiSlider.set(n)
+  })
+}
 
-});
-
-ellipseButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(4)
-    sliderB.noUiSlider.set(2)
-    sliderM.noUiSlider.set(2)
-    sliderN.noUiSlider.set(2)
-
-});
-
-astroidButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(2/3)
-    sliderN.noUiSlider.set(2/3)
-
-});
-
-parallelogramButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(4)
-    sliderB.noUiSlider.set(2)
-    sliderM.noUiSlider.set(1)
-    sliderN.noUiSlider.set(1)
-
-});
-
-squareButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(1)
-    sliderN.noUiSlider.set(1)
-
-});
-
-parabolaeButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(0.5)
-    sliderN.noUiSlider.set(0.5)
-
-});
-
-convexButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(1.5)
-    sliderN.noUiSlider.set(1.5)
-
-});
-
-squircleButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(4)
-    sliderN.noUiSlider.set(4)
-
-});
-
-rectellipseButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(4)
-    sliderB.noUiSlider.set(2)
-    sliderM.noUiSlider.set(4)
-    sliderN.noUiSlider.set(4)
-
-});
-
-pietheinButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(2.5)
-    sliderM.noUiSlider.set(2.5)
-    sliderN.noUiSlider.set(2.5)
-
-});
-
-ellipseevoluteButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(2)
-    sliderB.noUiSlider.set(4)
-    sliderM.noUiSlider.set(0.5)
-    sliderN.noUiSlider.set(0.5)
-
-});
-
-iosappButton.addEventListener('click', function () {
-    sliderA.noUiSlider.set(3)
-    sliderB.noUiSlider.set(3)
-    sliderM.noUiSlider.set(5)
-    sliderN.noUiSlider.set(5)
-
-});
+setSliders(circleButton, 3, 3, 2, 2)
+setSliders(ellipseButton, 4, 2  , 2, 2)
+setSliders(astroidButton, 3, 3, 2/3, 2/3)
+setSliders(parallelogramButton, 4, 2, 1, 1)
+setSliders(squareButton, 3, 3, 1, 1)
+setSliders(parabolaeButton, 3, 3, 0.5, 0.5)
+setSliders(convexButton, 3, 3, 1.5, 1.5)
+setSliders(squareButton, 3, 3, 4, 4)
+setSliders(rectellipseButton, 4, 2, 4, 4)
+setSliders(pietheinButton, 3, 2.5, 2.5, 2.5)
+setSliders(ellipseevoluteButton, 2, 4, 0.5, 0.5)
+setSliders(iosappButton, 3, 3, 5, 5)
