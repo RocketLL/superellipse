@@ -20,7 +20,11 @@ var winW = document.documentElement.clientWidth;
 // (document.documentElement.clientWidth >= 500) ? (w=500, h=500) : (w=document.documentElement.clientWidth-100, h=w);
 
 
-(winH > winW) ? (w=winW-100) : ((winH > 800) ? (w=winH-430) : (w=500))
+// (winH > winW) ? (w=winW-20) : ((winH > 900) ? (w=470) : ((winH > 800) ? (w=winH-430) : (w=500)))
+
+
+
+(winH > 900 /* Determine if desktop.*/) ? ((winH-100 > winW/* Desktop, check aspect ratio*/) ? (w=winW-40) : (w=winH-430 /* Fill screen wtih plot */)) : ((winH > winW /* Could be either, check aspect ratio*/) ? (w=winW-40/* Definitely mobile! */) : (w=500/* something else */))
 
 h=w
 document.getElementById('plot-parent').setAttribute('style', 'width:' + w + 'px;')
