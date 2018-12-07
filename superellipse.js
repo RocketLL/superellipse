@@ -72,27 +72,18 @@ noUiSlider.create(sliderN, {
 
 function draw() {
   var a = sliderA.noUiSlider.get();
-
   var b = sliderB.noUiSlider.get();
-
   var m = sliderM.noUiSlider.get();
-
   var n = sliderN.noUiSlider.get();
-
   var ma = 2 / m;
-
   var na = 2 / n;
-
   var valmap = math.range(-10, 10, 0.01).toArray();
-
   var xval = valmap.map(
     t => math.abs(math.pow(math.cos(t), ma)) * a * math.sign(math.cos(t))
   );
-
   var yval = valmap.map(
     t => math.abs(math.pow(math.sin(t), na)) * b * math.sign(math.sin(t))
   );
-
   const trace = {
     x: xval,
     y: yval,
@@ -162,7 +153,7 @@ setSliders(parallelogramButton, 4, 2, 1, 1);
 setSliders(squareButton, 3, 3, 1, 1);
 setSliders(parabolaeButton, 3, 3, 0.5, 0.5);
 setSliders(convexButton, 3, 3, 1.5, 1.5);
-setSliders(squareButton, 3, 3, 4, 4);
+setSliders(squircleButton, 3, 3, 4, 4);
 setSliders(rectellipseButton, 4, 2, 4, 4);
 setSliders(pietheinButton, 3, 2.5, 2.5, 2.5);
 setSliders(ellipseevoluteButton, 2, 4, 0.5, 0.5);
